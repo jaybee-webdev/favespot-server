@@ -21,25 +21,34 @@ DB_PASS=
  POST Request: http://localhost:8080/api/auth/signup
     -user registration.
     -request body: 
-        1.) firstName
-        2.) lastName
-        3.) email address
-        4.) mobile
-        5.) password
-        6.) confirmPassword
+         { firstName, lastName, email, mobile, password , confirmPassword }
     -response: 
         1.) user details
         2.) user token
         3.) success/error messages
 
 
-  POST Request: http://localhost:8080/api/auth/signup
-    -user registration.
+  POST Request: http://localhost:8080/api/auth/signin
+    -user signin.
     -request body: 
-        1.) firstName
-        2.) lastName
-        3.) email address
-        4.) mobile
-        5.) password
-        6.) confirmPassword
+        { email, password }
+        
+   GET Request: http://localhost:8080/api/currentLocation/?lat=11.2315028&lon=125.001836
+    -Get Current Location.
+    -parameters: 
+      lat
+      long
+    -response: Location Details 
+
+          
+   GET Request: http://localhost:8080/api/nearby/Users/?rad=1500&lat=11.174363&lon=124.954558&zip=6500
+    -Get Nearby Users.
+    -parameters: 
+      rad = radius
+      lat = latitude
+      long = longitude
+      zip = zip
+    -response: Array[ Users Location ]
+     
+  
 
