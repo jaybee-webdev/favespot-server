@@ -37,7 +37,9 @@ exports.signin = (req, res) => {
   
   User.findOne({
     where: {
-      email: req.body.email
+      [Op.or]: [
+        { email: req.body.email}, {mobile: req.body.email}
+      ]
     }
   })
     .then(user => {
