@@ -15,22 +15,24 @@ exports.getCurrentLocation = (req, res) => {
 
     let lat = req.query.lat;
     let lon = req.query.lon;
+    let newLoc = new Location({
+        lat, lon, zip: '6500'
+    });
 
-    axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=&latlng=${lat},${lon}&key=${config.mapKey}`)
-    .then(rs => {
-        // console.log(rs.data.results)
-        let loc = rs.data.results[0];
-        let newLoc = new Location({
-            lat, lon, zip: '6500'
-        });
+    newLoc.save(); 
+            res.json('Saved Successfully!');
 
-        newLoc.save(); 
-        res.json(rs.data.results[0]);
+    // axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=&latlng=${lat},${lon}&key=${config.mapKey}`)
+    // .then(rs => {
+    //     // console.log(rs.data.results)
+    //     let loc = rs.data.results[0];
+    
+    //     res.json(rs.data.results[0]);
 
-    })
-    .catch(err => {
-        res.status(400).send(err)
-    })
+    // })
+    // .catch(err => {
+    //     res.status(400).send(err)
+    // })
 
   };
 
@@ -61,9 +63,12 @@ exports.getCurrentLocation = (req, res) => {
         }
     })
     
-
+    let rs = {
+        length: arr.length,
+        result: arr
+    }
     console.log(arr.length)
-    res.json(arr)
+    res.json(rs)
     // axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latlon}&radius=1500&key=${config.mapKey}`)
     // .then(rs => {
     //     console.log(rs.data)

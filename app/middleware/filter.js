@@ -7,7 +7,6 @@ nearByUsers = (req, res, next) => {
    
     let zip = req.query.zip;
 
-    if(zip){
         Location.findAll({
             // where: {
             //     zip 
@@ -23,9 +22,7 @@ nearByUsers = (req, res, next) => {
             next();
     
         })
-    } else {
-        next();
-    }
+        // next();
   };
 
   const filter = {
