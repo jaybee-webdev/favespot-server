@@ -86,3 +86,13 @@ const isEmail = (email) => {
   };
   
   
+
+  exports.tsFormat = (data) => {
+      console.log(data)
+      const propertyValues = Object.values(data);
+     let tx = propertyValues.join('+').split(' ').join('+');
+      console.log(propertyValues)
+      console.log(tx)
+    return tx
+  
+  }

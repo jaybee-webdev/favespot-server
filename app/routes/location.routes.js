@@ -20,14 +20,18 @@ module.exports = function(app) {
     controller.getNearByUsers
   );
 
+  app.get(
+    "/api/searchAddress",
+    controller.searchAddress
+  );
 
   app.get(
     "/api/currentLocation",
     controller.getCurrentLocation
   );
 
-  app.get(
-    "/api/getNearBy",
-    controller.getNearBy
-  );
+  // app.get(
+  //   "/api/getNearBy",
+  //   controller.getNearBy
+  // );
 };

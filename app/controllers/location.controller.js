@@ -6,6 +6,7 @@ const Location = db.location;
 var { radiusLocator } = require('../utils/geolocator');
 const { user } = require('../models');
 
+var { tsFormat } = require('../utils/validators');
 
 
 
@@ -81,14 +82,37 @@ exports.getCurrentLocation = (req, res) => {
   };
 
 
-  exports.getNearBy = (req, res) => {
-    // Validate request
-    console.log(req.query);
+//   exports.getNearBy = (req, res) => {
+//     // Validate request
+//     console.log(req.query);
 
-    axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=${config.mapKey}`)
+//     axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=${config.mapKey}`)
+//     .then(rs => {
+//         // console.log(rs.data.results)
+//         res.json(rs.data.results[0]);
+//     })
+//     .catch(err => {
+//         res.status(400).send(err)
+//     })
+
+//   };
+
+  exports.searchAddress = (req, res) => {
+    // Validate request
+
+    // let streetAddress = req.query.streetAddress;
+    // let city = req.query.city;
+    // let state = req.query.state;
+    // let country = req.query.country;
+    // let zip = req.query.zip;
+    let tsText = tsFormat(req.query);
+    console.log(tsText);
+    // https://maps.googleapis.com/maps/api/geocode/json?address=&latlng=${lat},${lon}&key=${config.mapKey}
+
+    axios.get(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${tsText}&key=${config.mapKey}`)
     .then(rs => {
-        // console.log(rs.data.results)
-        res.json(rs.data.results[0]);
+        console.log(rs.data)
+        res.json(rs.data);
     })
     .catch(err => {
         res.status(400).send(err)
@@ -97,3 +121,5 @@ exports.getCurrentLocation = (req, res) => {
   };
 
    
+
+//   axios.get(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${tsText}+main+street&location=42.3675294,-71.186966&radius=10000&key=${config.mapKey}

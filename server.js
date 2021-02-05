@@ -51,7 +51,7 @@ require('./app/routes/location.routes')(app);
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "Welcome to favespot back-end server." });
 });
 
 // set port, listen for requests

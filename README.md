@@ -50,5 +50,16 @@ DB_PASS=
       zip = zip
     -response: Array[ Users Location ]
      
-  
+    GET Request: http://localhost:8080/api/searchAddress/?streetAddress=016+dadison+street&city=tacloban+city&state=&zip=6500
+    -Get Address Details.
+    -Parameters:
+        Street Address
+        City
+        State
+        zip( Postal Code is the same as Zip Code )
+    -response: Address Details
+
+
+    Try Live Server API's: https://postal-server.herokuapp.com/
+
 
