@@ -61,19 +61,13 @@ exports.signin = (req, res) => {
         expiresIn: 86400 // 24 hours
       });
 
-      var authorities = [];
-      user.getRoles().then(roles => {
-        for (let i = 0; i < roles.length; i++) {
-          authorities.push("ROLE_" + roles[i].name.toUpperCase());
-        }
         res.status(200).send({
           id: user.id,
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
-          roles: authorities,
+          mobile: user.mobile,
           accessToken: token
-        });
       });
     })
     .catch(err => {
