@@ -12,7 +12,7 @@ var { validateSignupData, validateLoginData } = require('../utils/validators');
 
 exports.signup = (req, res) => {
   // Save User to Database
-  let { firstName, lastName, email, mobile, password, confirmPassword } = req.body;
+  let { firstName, lastName, email, mobile } = req.body;
   let { errors, valid } = validateSignupData(req.body);
   console.log(errors)
   console.log(valid)
