@@ -14,9 +14,9 @@ module.exports = function(app) {
 //POST
   app.post(
     "/api/new/restaurant",
-    [
-     authJwt.verifyToken,
-    ],
+    // [
+    //  authJwt.verifyToken,
+    // ],
     controller.createRestaurant
   );
 

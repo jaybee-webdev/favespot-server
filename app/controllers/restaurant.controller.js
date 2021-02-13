@@ -25,7 +25,7 @@ exports.createRestaurant = async (req, res) => {
 
 
   Restaurant.create({ id: uuidv4(), ...req.body.restaurantDetails, 
-    userId: req.userId
+    // userId: req.userId
   })
     .then(rest => {
         rest.setLocations(loc).then(ul => {
