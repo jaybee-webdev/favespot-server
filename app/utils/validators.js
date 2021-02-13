@@ -1,4 +1,7 @@
 const moment = require('moment');
+const axios = require('axios');
+const config = require("../config/auth.config");
+var { validateAddressData } = require('./testFunctions');
 
 //  const typeOf = (string, tp) => {
 //    let val;
@@ -35,6 +38,12 @@ const moment = require('moment');
 //   }
 
 
+const formLocation = (data) => {
+  console.log(data.results[0])
+    let { formatted_address, geometry: { location }, place_id } = data.results[0];
+    return { formatted_address, placeId: place_id, ...location }
+}
+
 
 const isEmail = (email) => {
     const regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -54,14 +63,19 @@ const isEmail = (email) => {
   
   exports.validateSignupData = (data) => {
     let errors = {};
-  
+    
     if (!isEmail(data.email)) errors.email = 'Must be a valid email';
     if (isEmpty(data.firstName)) errors.firstName = 'First Name must not be empty';
     if (isEmpty(data.lastName)) errors.lastName = 'Last Name must not be empty';
     if (isEmpty(data.mobile)) errors.mobile = 'Mobile # must not be empty';
     if (isEmpty(data.password)) errors.password = 'Password must not be empty';
     if (data.confirmPassword !== data.password) errors.confirmPassword = 'Password must match!';
-    
+    if (isEmpty(data.streetAddress)) errors.streetAddress = 'Street Address must not be empty';
+    if (isEmpty(data.city)) errors.city = 'City must not be empty';
+    if (isEmpty(data.state)) errors.state = 'State must not be empty';
+    if (isEmpty(data.country)) errors.country = 'Country must not be empty';
+    if (isEmpty(data.zip)) errors.zip = 'Postal Code must not be empty';
+
     if(Object.keys(errors).length !== 0){
       errors.msg = 'Incomplete Details';
       errors.variant = 'error';
@@ -85,14 +99,112 @@ const isEmail = (email) => {
     };
   };
   
+
+  exports.validateRestaurantData = (data) => {
+    let errors = {};
+
+    if (isEmpty(data.name)) errors.name = 'Restaurant Name must not be empty';
+    if (isEmpty(data.contactName)) errors.contactName = 'Contact Name must not be empty';
+    if (isEmpty(data.businessNum)) errors.businessNum = 'Business # must not be empty';
+    if (!isEmail(data.businessEmail)) errors.businessEmail = 'Business Email must be a valid email';
+    if (isEmpty(data.streetAddress)) errors.streetAddress = 'Street Address must not be empty';
+    if (isEmpty(data.city)) errors.city = 'City must not be empty';
+    if (isEmpty(data.state)) errors.state = 'State must not be empty';
+    if (isEmpty(data.country)) errors.country = 'Country must not be empty';
+    if (isEmpty(data.zip)) errors.zip = 'Postal Code must not be empty';
+
+    return {
+      errors,
+      valid: Object.keys(errors).length === 0 ? true : false
+    };
+  };
+
+    
+  exports.validateLocationData = (data) => {
+    let errors = {};
+
+    if (isEmpty(data.streetAddress)) errors.streetAddress = 'Street Address must not be empty';
+    if (isEmpty(data.city)) errors.city = 'City must not be empty';
+    if (isEmpty(data.state)) errors.state = 'State must not be empty';
+    if (isEmpty(data.country)) errors.country = 'Country must not be empty';
+    if (isEmpty(data.zip)) errors.zip = 'Postal Code must not be empty';
+
+    return {
+      errors,
+      valid: Object.keys(errors).length === 0 ? true : false
+    };
+  };
   
 
+
+
   exports.tsFormat = (data) => {
-      console.log(data)
       const propertyValues = Object.values(data);
      let tx = propertyValues.join('+').split(' ').join('+');
-      console.log(propertyValues)
-      console.log(tx)
-    return tx
+     
+   let locString = axios.get(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${tx}&key=${config.mapKey}`)
+      .then(rs => {
+        let loc = formLocation(rs.data)
+        if(data.lat){
+          loc.lat = data.lat
+        }
+        if(data.lat){
+          loc.lng = data.lng
+        }
+        console.log(data.lat)
+        console.log(data.lng)
+
+        return loc
+          // res.json(rs.data);
+      })
+      .catch(err => {
+        return err
+          // res.status(400).send(err)
+      })
+
+     
+    return locString;
   
   }
+
+  exports.locFormat = async (data) => {
+    let { lat, lng} = data;
+ let locString = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${config.mapKey}`)
+    .then(rs => {
+         
+        return validateAddressData(rs.data.results)
+      // return formLocation(rs.data)
+    })
+    .catch(err => {
+      return err
+        // res.status(400).send(err)
+    })
+  return locString;
+}
+
+// axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latlon}&radius=1500&key=${config.mapKey}`)
+    // .then(rs => {
+    //     console.log(rs.data)
+    //     res.json(rs.data);
+    // })
+    // .catch(err => {
+    //     res.status(400).send(err)
+    // })
+
+     // axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latlon}&radius=1500&key=${config.mapKey}`)
+    // .then(rs => {
+    //     console.log(rs.data)
+    //     res.json(rs.data);
+    // })
+    // .catch(err => {
+    //     res.status(400).send(err)
+    // })
+
+    //     axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=${config.mapKey}`)
+//     .then(rs => {
+//         // console.log(rs.data.results)
+//         res.json(rs.data.results[0]);
+//     })
+//     .catch(err => {
+//         res.status(400).send(err)
+//     })

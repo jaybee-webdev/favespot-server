@@ -1,37 +1,80 @@
+const { v4: uuidv4 } = require('uuid');
 const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
 const Role = db.role;
+const UserType = db.userType;
+const Location = db.location;
+const Restaurant = db.restaurant;
 
 const Op = db.Sequelize.Op;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
-var { validateSignupData, validateLoginData } = require('../utils/validators');
+var { validateSignupData, validateLoginData, tsFormat} = require('../utils/validators');
+const { user, role, restaurant } = require("../models");
 
 
-exports.signup = (req, res) => {
+exports.signup = async (req, res) => {
   // Save User to Database
-  let { firstName, lastName, email, mobile } = req.body;
-  let { errors, valid } = validateSignupData(req.body);
-  console.log(errors)
-  console.log(valid)
-
+  console.log(uuidv4())
+  let { firstName, lastName, email, mobile, password } = req.body.userDetails;
+  console.log(req.body)
+  let userData = { ...req.body.userDetails, ...req.body.locationDetails };
+  let { errors, valid } = validateSignupData(userData);
+  console.log(req.body.locationDetails);
+  let tsText = await tsFormat(req.body.locationDetails);
   if(!valid) return res.status(400).json(errors);
 
+  let nl = new Location({
+   ...req.body.locationDetails, ...tsText, type: 'permanent'})
+
+  let loc = await nl.save();
+
   User.create({
-    firstName, lastName, email, mobile, password: bcrypt.hashSync(req.body.password, 8)
+    id: uuidv4(), firstName, lastName, email, mobile, password: bcrypt.hashSync(password, 8)
   })
     .then(user => {
-          res.send({ message: "User was registered successfully!" });
+
+        user.setLocations(loc).then(ul => {
+          console.log(ul)
+        })
+        .catch(err => {
+          res.status(500).send({ message: err.message });
+        });
+
+      user.setUserTypes([1]).then(() => {
+        if (req.body.roles) {
+          Role.findAll({
+            where: {
+              name: {
+                [Op.or]: req.body.roles
+              }
+            }
+          }).then(roles => {
+            user.setRoles(roles).then(() => {
+              res.send({ message: "User was registered successfully!" });
+            });
+          });
+        } else {
+          // user role = 1
+          user.setRoles([1]).then(() => {
+            res.send({ message: "User was registered successfully!" });
+          });
+        }
+      })
+      .catch(err => {
+        res.status(500).send({ message: err.message });
+      });
+      
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
 };
 
-exports.signin = (req, res) => {
 
+exports.signin = (req, res) => {
   let { errors, valid } = validateLoginData(req.body);
   if(!valid) return res.status(400).json(errors);
   
@@ -63,16 +106,75 @@ exports.signin = (req, res) => {
         expiresIn: 86400 // 24 hours
       });
 
+      var authorities = [];
+      var userTypes = [];
+
+      user.getUserTypes().then(usrType => {
+        for (let i = 0; i < usrType.length; i++) {
+          userTypes.push(usrType[i].name);
+        }
+      })
+
+      user.getRoles().then(roles => {
+        for (let i = 0; i < roles.length; i++) {
+          authorities.push("ROLE_" + roles[i].name.toUpperCase());
+        }
+
         res.status(200).send({
           id: user.id,
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
           mobile: user.mobile,
+          roles: authorities,
+          userTypes,
           accessToken: token
+        });
       });
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
+};
+
+exports.getUserData = async (req, res) => {
+
+    // let userRoles = [];
+    // let userLocations = [];
+    // let userData = req.user;
+  console.log(req.userId)
+    User.findByPk(req.userId, { 
+      exclude: ['password'],
+      include: [
+        { model: Location },
+        { model: Role },
+        { model: UserType },
+        { model: Restaurant, required: false }
+        ]
+  })
+  .then(usr => {
+    console.log(usr);
+    res.status(200).json(usr);
+
+  })
+  .catch(err => {
+    res.status(500).send({ message: err.message });
+  })
+
+    // await req.user.getRoles().then(roles => {
+    //   // console.log(roles)
+    //   for (let i = 0; i < roles.length; i++) {
+    //     userRoles.push("ROLE_" + roles[i].name.toUpperCase());
+    //   }
+    // });
+
+    // await req.user.getLocations().then(loc => {
+    //   console.log(loc)
+    // });
+
+
+    // userData.roles = userRoles;
+    // userData.locations = userLocations;
+    // console.log(userData)
+    // res.status(200).json(userData);
 };

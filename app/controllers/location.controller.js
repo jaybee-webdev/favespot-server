@@ -107,7 +107,7 @@ exports.getCurrentLocation = (req, res) => {
     // let zip = req.query.zip;
     let tsText = tsFormat(req.query);
     console.log(tsText);
-    // https://maps.googleapis.com/maps/api/geocode/json?address=&latlng=${lat},${lon}&key=${config.mapKey}
+
 
     axios.get(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${tsText}&key=${config.mapKey}`)
     .then(rs => {

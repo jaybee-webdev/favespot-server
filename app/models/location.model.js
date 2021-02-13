@@ -1,12 +1,13 @@
 module.exports = (sequelize, Sequelize) => {
     const Location = sequelize.define("locations", {
-      lat: {
+    
+      streetAddress: {
         type: Sequelize.STRING
       },
-      lon: {
+      city: {
         type: Sequelize.STRING
       },
-      placeId: {
+      state: {
         type: Sequelize.STRING
       },
       country: {
@@ -16,6 +17,15 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
       },
       formatted_address: {
+        type: Sequelize.STRING
+      },
+      lat: {
+        type: Sequelize.STRING
+      },
+      lng: {
+        type: Sequelize.STRING
+      },
+      placeId: {
         type: Sequelize.STRING
       },
       type: {

@@ -4,23 +4,44 @@ const db = require("../models");
 const User = db.user;
 
 verifyToken = (req, res, next) => {
-  let token = req.headers["x-access-token"];
-
-  if (!token) {
-    return res.status(403).send({
-      message: "No token provided!"
-    });
+  let idToken;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer ')
+  ) {
+    idToken = req.headers.authorization.split('Bearer ')[1];
+  } else {
+    console.error('No token found');
+    return res.status(403).json({ error: 'Unauthorized' });
   }
 
-  jwt.verify(token, config.secret, (err, decoded) => {
+
+  // let token = req.headers["authorization"];
+
+  // if (!token) {
+  //   return res.status(403).send({
+  //     message: "No token provided!"
+  //   });
+  // }
+
+  jwt.verify(idToken, config.secret, (err, decoded) => {
     if (err) {
+      console.log(err)
       return res.status(401).send({
         message: "Unauthorized!"
       });
     }
+
+    
+  User.findByPk(decoded.id, { attributes: {exclude: ['password']}})
+  .then(usr => {
     req.userId = decoded.id;
-  
+    req.user = usr;
     next();
+  })
+  .catch(err => {
+    console.log(err)
+  })
   });
 };
 

@@ -1,27 +1,25 @@
-
-
 module.exports = (sequelize, Sequelize) => {
-    const User = sequelize.define("users", {
+    const Restaurant = sequelize.define("restaurants", {
       id: {
         primaryKey: true,
         type: Sequelize.UUID,
       },
-      firstName: {
+      name: {
         type: Sequelize.STRING
       },
-      lastName: {
+      description: {
         type: Sequelize.STRING
       },
-      email: {
+      contactName: {
         type: Sequelize.STRING
       },
-      mobile: {
+      businessNum: {
         type: Sequelize.STRING
       },
-      password: {
+      businessEmail: {
         type: Sequelize.STRING
       }
     });
   
-    return User;
+    return Restaurant;
   };

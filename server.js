@@ -18,13 +18,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 const db = require("./app/models");
-db.sequelize.sync();
 
-// const Role = db.role;
+
+
+const Role = db.role;
+const UserType = db.userType;
+
 
 // db.sequelize.sync({force: true}).then(() => {
 //   console.log('Drop and Resync Db');
-//   // initial();
+//   initial();
 // });
 
 // function initial() {
@@ -42,12 +45,25 @@ db.sequelize.sync();
 //     id: 3,
 //     name: "admin"
 //   });
+
+//   UserType.create({
+//     id: 1,
+//     name: "consumer"
+//   });
+//   UserType.create({
+//     id: 2,
+//     name: "restaurant"
+//   });
 // }
 
-require("./app/routes/tutorial.routes")(app);
+db.sequelize.sync();
+
+
 require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);
 require('./app/routes/location.routes')(app);
+require('./app/routes/restaurant.routes')(app);
+
 
 // simple route
 app.get("/", (req, res) => {
