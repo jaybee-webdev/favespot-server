@@ -35,12 +35,12 @@ exports.createRestaurant = async (req, res) => {
           res.status(500).send({ message: err.message });
         });
 
-      req.user.addUserTypes([2]).then(ul => {
-        console.log(ul)
-      })
-        .catch(err => {
-          res.status(500).send({ message: err.message });
-        });
+      // req.user.addUserTypes([2]).then(ul => {
+      //   console.log(ul)
+      // })
+      //   .catch(err => {
+      //     res.status(500).send({ message: err.message });
+      //   });
           res.send({ message: "Restaurant was created successfully!" });
     })
     .catch(err => {
