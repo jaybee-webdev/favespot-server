@@ -1,6 +1,17 @@
 # favespot-server
 Favespot Back-end server
 
+### Try Live Server API's.
+    https://favespot-server.herokuapp.com/api
+
+### Static file Server. 
+    https://favespot-server.herokuapp.com/static/{fileId}
+
+    ex: https://favespot-server.herokuapp.com/static/-_Ppr0tyH4YNERDkMbHq-w.jpg
+
+
+
+
 ### Database and Api Key Configuration
   1.) create .env file and insert.
 SECRET=my-secret-key
@@ -58,14 +69,6 @@ DB_PASS=
         State
         zip( Postal Code is the same as Zip Code )
     -response: Address Details
-
-### Try Live Server API's.
-    https://favespot-server.herokuapp.com/api
-
-### Static file Server. 
-    https://favespot-server.herokuapp.com/static/{fileId}
-
-    ex: https://favespot-server.herokuapp.com/static/-_Ppr0tyH4YNERDkMbHq-w.jpg
 
 
 
