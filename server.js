@@ -71,7 +71,8 @@ require('./app/routes/restaurant.routes')(app);
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to favespot back-end server." });
+  res.json({ message: "Welcome to favespot back-end server.",
+path: process.cwd()  });
 });
 
 // set port, listen for requests
