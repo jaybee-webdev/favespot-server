@@ -60,6 +60,8 @@ DB_PASS=
     -response: Address Details
 
 
-    Try Live Server API's: https://postal-server.herokuapp.com/
+    Try Live Server API's: https://favespot-server.herokuapp.com/api
+     Static file Server: https://favespot-server.herokuapp.com/static
+
 
 
