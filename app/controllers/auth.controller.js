@@ -178,3 +178,18 @@ exports.getUserData = async (req, res) => {
     // console.log(userData)
     // res.status(200).json(userData);
 };
+
+
+exports.UploadDp = (req, res) => {
+  console.log('wewewewewew')
+  // const uid = req.user.uid
+let fileName = req.file.filename;
+res.send(fileName)
+// User.updateOne({_id: uid}, { dpUrl: staticUrl + fileName })
+// .then(rs => {
+//   res.status(201).json({ dpUrl: staticUrl + fileName})
+// })
+// .catch(err => {
+//   res.status(400).json(err);
+// })
+}

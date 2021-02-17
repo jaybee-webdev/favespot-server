@@ -10,6 +10,14 @@ module.exports = function(app) {
     next();
   });
 
+//POST
+
+
+
+
+
+
+
   app.get("/api/test/all", controller.allAccess);
 
   app.get(

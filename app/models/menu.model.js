@@ -1,6 +1,10 @@
 module.exports = (sequelize, Sequelize) => {
     const Menu = sequelize.define("menus", {
-      dishName: {
+      id: {
+        primaryKey: true,
+        type: Sequelize.UUID,
+      },
+      name: {
         type: Sequelize.STRING
       },
       description: {
@@ -9,8 +13,13 @@ module.exports = (sequelize, Sequelize) => {
       price: {
         type: Sequelize.INTEGER
       },
-      active: {
-        type: Sequelize.BOOLEAN
+      isActive: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+      isDeleted: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       }
     });
   

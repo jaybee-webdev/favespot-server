@@ -20,6 +20,14 @@ module.exports = function(app) {
     controller.createRestaurant
   );
 
+  app.post(
+    "/api/new/menu/:restId",
+    // [
+    //  authJwt.verifyToken,
+    // ],
+    controller.createMenu
+  );
+
 
 //GET
 app.get(
@@ -35,6 +43,11 @@ app.get(
 app.get(
   "/api/nearby/restaurants",
   controller.getNearbyRestaurants
+);
+
+app.get(
+  "/api/menu/active/:restId/:isActive",
+  controller.setActiveMenu
 );
 
 

@@ -134,6 +134,19 @@ const isEmail = (email) => {
       valid: Object.keys(errors).length === 0 ? true : false
     };
   };
+
+  exports.validateMenuData = (data) => {
+    let errors = {};
+    console.log(data)
+    if (isEmpty(data.name)) errors.name = 'Name of dish must not be empty';
+    if (isEmpty(data.price)) errors.price = 'Price must not be empty';
+   
+    return {
+      errors,
+      valid: Object.keys(errors).length === 0 ? true : false
+    };
+  };
+  
   
 
 
@@ -182,6 +195,14 @@ const isEmail = (email) => {
   return locString;
 }
 
+exports.fileNamer = async (data) => {
+  let rs = String(data);
+  let res = rs.replace(/\s+/g, '');
+  console.log('wewe' + res);
+  return res;
+}
+
+
 // axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latlon}&radius=1500&key=${config.mapKey}`)
     // .then(rs => {
     //     console.log(rs.data)
@@ -208,3 +229,5 @@ const isEmail = (email) => {
 //     .catch(err => {
 //         res.status(400).send(err)
 //     })
+
+

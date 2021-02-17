@@ -17,6 +17,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
+app.use('/static', express.static('resources'))
+
+
+
 const db = require("./app/models");
 
 
