@@ -65,7 +65,7 @@ DB_PASS=
 ### Static file Server. 
     https://favespot-server.herokuapp.com/static/{fileId}
 
-    ex: https://favespot-server.herokuapp.com/static/https://favespot-server.herokuapp.com/static/-_Ppr0tyH4YNERDkMbHq-w.jpg
+    ex: https://favespot-server.herokuapp.com/static/-_Ppr0tyH4YNERDkMbHq-w.jpg
 
 
 
