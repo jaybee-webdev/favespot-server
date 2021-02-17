@@ -60,10 +60,11 @@ DB_PASS=
     -response: Address Details
 
 ### Try Live Server API's
-    https://favespot-server.herokuapp.com/api
+    -https://favespot-server.herokuapp.com/api
 
-    Try Live Server API's: https://favespot-server.herokuapp.com/api
-     -Static file Server: https://favespot-server.herokuapp.com/static/{fileId}
+    -Try Live Server API's: https://favespot-server.herokuapp.com/api
+### Static file Server: 
+    -https://favespot-server.herokuapp.com/static/{fileId}
 
      > Ex: [https://favespot-server.herokuapp.com/static/https://favespot-server.herokuapp.com/static/-_Ppr0tyH4YNERDkMbHq-w.jpg]
 
