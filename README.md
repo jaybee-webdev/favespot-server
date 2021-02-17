@@ -62,14 +62,10 @@ DB_PASS=
 ### Try Live Server API's
     https://favespot-server.herokuapp.com/api
 
-<<<<<<< HEAD
     Try Live Server API's: https://favespot-server.herokuapp.com/api
-     Static file Server: https://favespot-server.herokuapp.com/static/{fileId}
+     -Static file Server: https://favespot-server.herokuapp.com/static/{fileId}
+
      > Ex: [https://favespot-server.herokuapp.com/static/https://favespot-server.herokuapp.com/static/-_Ppr0tyH4YNERDkMbHq-w.jpg]
-=======
-### Static file Server
-    https://favespot-server.herokuapp.com/static
->>>>>>> 8b5b5b862cd493008f0abfad7096d4af8752a68e
 
 
 
