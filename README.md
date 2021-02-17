@@ -1,7 +1,7 @@
 # favespot-server
 Favespot Back-end server
 
-# Database and Api Key Configuration
+### Database and Api Key Configuration
   1.) create .env file and insert.
 SECRET=my-secret-key
 MAP_API_KEY=my-google-map-key
@@ -10,7 +10,7 @@ DB_NAME=favespot
 DB_USER=root
 DB_PASS=
 
-# Local Installation Procedure.
+### Local Installation Procedure.
   1.) clone repository to local computer
   2.) type "npm install" in the command line
   3.) run the server by typing "npm run dev"
@@ -61,7 +61,8 @@ DB_PASS=
 
 
     Try Live Server API's: https://favespot-server.herokuapp.com/api
-     Static file Server: https://favespot-server.herokuapp.com/static
+     Static file Server: https://favespot-server.herokuapp.com/static/{fileId}
+     > Ex: [https://favespot-server.herokuapp.com/static/https://favespot-server.herokuapp.com/static/-_Ppr0tyH4YNERDkMbHq-w.jpg]
 
 
 
