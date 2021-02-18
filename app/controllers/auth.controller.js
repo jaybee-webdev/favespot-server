@@ -17,10 +17,8 @@ const { user, role, restaurant } = require("../models");
 
 exports.signup = async (req, res) => {
   // Save User to Database
+  console.log(req.body)
   let { firstName, lastName, email, mobile, password } = req.body;
-  let { errors, valid } = validateSignupData(req.body);
-
-  if(!valid) return res.status(400).json(errors);
 
  
   User.create({

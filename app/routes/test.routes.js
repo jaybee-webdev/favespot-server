@@ -23,6 +23,12 @@ module.exports = function(app) {
   );
 
 
+ //GET
+ 
+app.get(
+  "/test/users",
+  controller.getAllUsers
+); 
 
 
 };

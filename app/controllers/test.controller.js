@@ -74,3 +74,21 @@ exports.signup = async (req, res) => {
 };
 
 
+
+
+exports.getAllUsers = async (req, res) => {
+  // Save User to Database
+  console.log('getUsers')
+  await User.findAll({
+    attributes: {exclude: ['password', 'createdAt', 'updatedAt']},
+  })
+    .then(users => {
+      console.log(users)
+      res.json(users)
+    })
+    .catch(err => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
+

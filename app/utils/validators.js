@@ -69,7 +69,7 @@ const isEmail = (email) => {
     if (isEmpty(data.lastName)) errors.lastName = 'Last Name must not be empty';
     if (isEmpty(data.mobile)) errors.mobile = 'Mobile # must not be empty';
     if (isEmpty(data.password)) errors.password = 'Password must not be empty';
-    if (data.confirmPassword !== data.password) errors.confirmPassword = 'Password must match!';
+    // if (data.confirmPassword !== data.password) errors.confirmPassword = 'Password must match!';
    
 
     if(Object.keys(errors).length !== 0){

@@ -2,7 +2,14 @@ const db = require("../models");
 const ROLES = db.ROLES;
 const User = db.user;
 
+var { validateSignupData } = require('../utils/validators');
+
 checkDuplicateMobileOrEmail = (req, res, next) => {
+  console.log('wewew')
+  let { errors, valid } = validateSignupData(req.body);
+
+  if(!valid) return res.status(400).json(errors);
+
   // Username
   User.findOne({
     where: {
