@@ -70,7 +70,11 @@ const isEmail = (email) => {
     if (isEmpty(data.mobile)) errors.mobile = 'Mobile # must not be empty';
     if (isEmpty(data.password)) errors.password = 'Password must not be empty';
     if (data.confirmPassword !== data.password) errors.confirmPassword = 'Password must match!';
-   
+    if (isEmpty(data.streetAddress)) errors.streetAddress = 'Street Address must not be empty';
+    if (isEmpty(data.city)) errors.city = 'City must not be empty';
+    if (isEmpty(data.state)) errors.state = 'State must not be empty';
+    if (isEmpty(data.country)) errors.country = 'Country must not be empty';
+    if (isEmpty(data.zip)) errors.zip = 'Postal Code must not be empty';
 
     if(Object.keys(errors).length !== 0){
       errors.msg = 'Incomplete Details';

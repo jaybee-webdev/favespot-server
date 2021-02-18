@@ -7,6 +7,41 @@ checkDuplicateMobileOrEmail = (req, res, next) => {
   User.findOne({
     where: {
       // mobile: req.body.user.mobile,
+      mobile: req.body.mobile
+    }
+  }).then(user => {
+    if (user) {
+      res.status(400).send({
+        message: "Failed! Mobile is already in use!"
+      });
+      return;
+    }
+
+    // Email
+    User.findOne({
+      where: {
+        email: req.body.email
+        // email: req.body.email
+
+      }
+    }).then(user => {
+      if (user) {
+        res.status(400).send({
+          message: "Failed! Email is already in use!"
+        });
+        return;
+      }
+
+      next();
+    });
+  });
+};
+
+testDuplicateMobileOrEmail = (req, res, next) => {
+  // Username
+  User.findOne({
+    where: {
+      // mobile: req.body.user.mobile,
       mobile: req.body.userDetails.mobile
     }
   }).then(user => {
@@ -54,7 +89,8 @@ checkRolesExisted = (req, res, next) => {
 
 const verifySignUp = {
   checkDuplicateMobileOrEmail: checkDuplicateMobileOrEmail,
-  checkRolesExisted: checkRolesExisted
+  checkRolesExisted: checkRolesExisted,
+  testDuplicateMobileOrEmail: testDuplicateMobileOrEmail
 };
 
 module.exports = verifySignUp;

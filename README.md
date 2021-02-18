@@ -10,8 +10,6 @@ Favespot Back-end server
     ex: https://favespot-server.herokuapp.com/static/-_Ppr0tyH4YNERDkMbHq-w.jpg
 
 
-
-
 ### Database and Api Key Configuration
   1.) create .env file and insert.
 SECRET=my-secret-key

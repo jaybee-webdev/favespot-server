@@ -70,6 +70,9 @@ require('./app/routes/location.routes')(app);
 require('./app/routes/restaurant.routes')(app);
 
 
+require('./app/routes/test.routes')(app);
+
+
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to favespot back-end server.",

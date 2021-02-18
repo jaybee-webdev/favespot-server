@@ -17,31 +17,18 @@ const { user, role, restaurant } = require("../models");
 
 exports.signup = async (req, res) => {
   // Save User to Database
-  console.log(uuidv4())
-  let { firstName, lastName, email, mobile, password } = req.body.userDetails;
-  console.log(req.body)
-  let userData = { ...req.body.userDetails, ...req.body.locationDetails };
-  let { errors, valid } = validateSignupData(userData);
-  console.log(req.body.locationDetails);
-  let tsText = await tsFormat(req.body.locationDetails);
+  let { firstName, lastName, email, mobile, password } = req.body;
+  let { errors, valid } = validateSignupData(req.body);
+
   if(!valid) return res.status(400).json(errors);
 
-  let nl = new Location({
-   ...req.body.locationDetails, ...tsText, type: 'permanent'})
-
-  let loc = await nl.save();
-
+ 
   User.create({
     id: uuidv4(), firstName, lastName, email, mobile, password: bcrypt.hashSync(password, 8)
   })
     .then(user => {
 
-        user.setLocations(loc).then(ul => {
-          console.log(ul)
-        })
-        .catch(err => {
-          res.status(500).send({ message: err.message });
-        });
+  
 
       user.setUserTypes([1]).then(() => {
         if (req.body.roles) {
@@ -72,6 +59,7 @@ exports.signup = async (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
 
 
 exports.signin = (req, res) => {
