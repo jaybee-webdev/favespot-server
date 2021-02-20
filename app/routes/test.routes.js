@@ -22,6 +22,16 @@ module.exports = function(app) {
     controller.signup
   );
 
+  app.post(
+    "/test/new/restaurant",
+    controller.createRestaurant
+  );
+
+  app.post(
+    "/test/new/menu/:restId",
+    controller.createMenu
+  );
+
 
  //GET
  

@@ -14,17 +14,17 @@ module.exports = function(app) {
 //POST
   app.post(
     "/api/new/restaurant",
-    // [
-    //  authJwt.verifyToken,
-    // ],
+    [
+     authJwt.verifyToken,
+    ],
     controller.createRestaurant
   );
 
   app.post(
     "/api/new/menu/:restId",
-    // [
-    //  authJwt.verifyToken,
-    // ],
+    [
+     authJwt.verifyToken,
+    ],
     controller.createMenu
   );
 

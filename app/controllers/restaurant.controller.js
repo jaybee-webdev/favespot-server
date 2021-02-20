@@ -20,9 +20,8 @@ exports.createRestaurant = async (req, res) => {
   console.log(tsText)
 
 
-
   Restaurant.create({ id: uuidv4(), ...req.body.restaurantDetails, 
-    // userId: req.userId
+    userId: req.userId
   })
     .then(rest => {
        Location.create({
@@ -40,15 +39,12 @@ exports.createRestaurant = async (req, res) => {
       });
     
 
-
-      
-
-      // req.user.addUserTypes([2]).then(ul => {
-      //   console.log(ul)
-      // })
-      //   .catch(err => {
-      //     res.status(500).send({ message: err.message });
-      //   });
+      req.user.addUserTypes([2]).then(ul => {
+        console.log(ul)
+      })
+        .catch(err => {
+          res.status(500).send({ message: err.message });
+        });
           res.send({ message: "Restaurant was created successfully!" });
     })
     .catch(err => {

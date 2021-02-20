@@ -125,12 +125,7 @@ exports.signin = (req, res) => {
 
 exports.getUserData = async (req, res) => {
 
-    // let userRoles = [];
-    // let userLocations = [];
-    // let userData = req.user;
-  console.log(req.userId)
-    User.findByPk(req.userId, { 
-      exclude: ['password'],
+    User.findByPk(req.userId, { attributes: { exclude: ['password']},
       include: [
         { model: Location },
         { model: Role },

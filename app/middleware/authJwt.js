@@ -5,6 +5,7 @@ const User = db.user;
 
 verifyToken = (req, res, next) => {
   let idToken;
+  console.log(req.headers)
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer ')
@@ -23,7 +24,7 @@ verifyToken = (req, res, next) => {
   //     message: "No token provided!"
   //   });
   // }
-
+console.log(idToken)
   jwt.verify(idToken, config.secret, (err, decoded) => {
     if (err) {
       console.log(err)
