@@ -13,7 +13,7 @@ module.exports = function(app) {
 
 //POST
   app.post(
-    "/api/new/restaurant",
+    "/api/restaurant",
     [
      authJwt.verifyToken,
     ],
@@ -21,11 +21,19 @@ module.exports = function(app) {
   );
 
   app.post(
-    "/api/new/menu/:restId",
+    "/api/menu/:restId",
     [
      authJwt.verifyToken,
     ],
     controller.createMenu
+  );
+
+  app.post(
+    "/api/category",
+    [
+     authJwt.verifyToken,
+    ],
+    controller.createCategory
   );
 
 
@@ -46,8 +54,35 @@ app.get(
 );
 
 app.get(
-  "/api/menu/active/:restId/:isActive",
+  "/api/menu/:restId",
+  [
+    authJwt.verifyToken,
+  ],
+  controller.getMenu
+);
+
+app.get(
+  "/api/menu-status/:menuId/:status",
+  [
+    authJwt.verifyToken,
+  ],
   controller.setActiveMenu
+);
+
+app.get(
+  "/api/restaurant/:restId/:status",
+  [
+    authJwt.verifyToken,
+  ],
+  controller.setRestaurantStatus
+);
+
+app.get(
+  "/api/categories",
+  [
+    authJwt.verifyToken,
+  ],
+  controller.getCategory
 );
 
 

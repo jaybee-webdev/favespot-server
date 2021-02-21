@@ -18,6 +18,10 @@ module.exports = (sequelize, Sequelize) => {
       },
       businessEmail: {
         type: Sequelize.STRING
+      },
+      isOpen: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       }
     });
   

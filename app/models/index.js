@@ -75,17 +75,7 @@ db.category.belongsToMany(db.restaurant, {
 })
 
 //Menu Type
-db.menu.belongsToMany(db.category, {
-  through: "menu_types",
-  foreignKey: "categoryId",
-  otherKey: "menuId"
-})
 
-db.category.belongsToMany(db.menu, {
-  through: "menu_types",
-  foreignKey: "menuId",
-  otherKey: "categoryId"
-})
 
 //User Types
 db.userType.belongsToMany(db.user, {
@@ -101,6 +91,7 @@ db.user.belongsToMany(db.userType, {
 });
 
 
+//Roles
 db.user.belongsToMany(db.role, {
   through: "user_roles",
   foreignKey: "userId",
@@ -112,6 +103,34 @@ db.role.belongsToMany(db.user, {
   foreignKey: "roleId",
   otherKey: "userId"
 });
+
+//Categories
+db.menu.belongsToMany(db.category, {
+  through: "menu_categories",
+  foreignKey: "categoryId",
+  otherKey: "menuId"
+})
+
+db.category.belongsToMany(db.menu, {
+  through: "menu_categories",
+  foreignKey: "menuId",
+  otherKey: "categoryId"
+})
+
+db.user.belongsToMany(db.category, {
+  through: "user_category",
+  foreignKey: "categoryId",
+  otherKey: "userId",
+  
+})
+
+db.category.belongsTo(db.user, {
+  as: "user_category",
+  foreignKey: "userId",
+})
+
+
+
 
 db.ROLES = ["user", "admin", "moderator"];
 

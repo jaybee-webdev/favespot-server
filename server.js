@@ -57,12 +57,14 @@ const UserType = db.userType;
 //   });
 //   UserType.create({
 //     id: 2,
-//     name: "restaurant"
+//     name: "restaurant",
 //   });
 // }
 
 db.sequelize.sync();
-
+// db.sequelize.drop({ force: true }).then().catch(err => {
+//   console.log(err)
+// })
 
 require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);

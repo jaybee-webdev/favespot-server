@@ -13,9 +13,9 @@ module.exports = (sequelize, Sequelize) => {
       price: {
         type: Sequelize.INTEGER
       },
-      isActive: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
+      status: {
+        type: Sequelize.STRING,
+        defaultValue: 'cl'
       },
       isDeleted: {
         type: Sequelize.BOOLEAN,

@@ -26,8 +26,6 @@ exports.signup = async (req, res) => {
   })
     .then(user => {
 
-  
-
       user.setUserTypes([1]).then(() => {
         if (req.body.roles) {
           Role.findAll({
@@ -38,13 +36,13 @@ exports.signup = async (req, res) => {
             }
           }).then(roles => {
             user.setRoles(roles).then(() => {
-              res.send({ message: "User was registered successfully!" });
+              res.send({ msg: "User was registered successfully!" });
             });
           });
         } else {
           // user role = 1
           user.setRoles([1]).then(() => {
-            res.send({ message: "User was registered successfully!" });
+            res.send({ msg: "User was registered successfully!" });
           });
         }
       })

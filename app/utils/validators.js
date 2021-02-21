@@ -143,6 +143,18 @@ const isEmail = (email) => {
     };
   };
   
+
+  exports.validateCategoryData = (data) => {
+    let errors = {};
+    if (isEmpty(data.name)) errors.name = 'Name of dish must not be empty';
+    if (isEmpty(data.type)) errors.type = 'Type must not be empty';
+   
+    return {
+      errors,
+      valid: Object.keys(errors).length === 0 ? true : false
+    };
+  };
+  
   
 
 
