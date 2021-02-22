@@ -21,10 +21,10 @@ exports.signup = async (req, res) => {
   let { firstName, lastName, email, mobile, password } = req.body;
 
  
-  User.create({
+  await User.create({
     id: uuidv4(), firstName, lastName, email, mobile, password: bcrypt.hashSync(password, 8)
   })
-    .then(user => {
+    .then( user => {
 
       user.setUserTypes([1]).then(() => {
         if (req.body.roles) {
@@ -36,20 +36,19 @@ exports.signup = async (req, res) => {
             }
           }).then(roles => {
             user.setRoles(roles)
+            // res.send({msg: 'User Registered Successfully'})
           });
         } else {
           // user role = 1
           user.setRoles([1])
+          // res.send({msg: 'User Registered Successfully'})
         }
         return user
       })
-      .then(usr => {
-        console.log(usr);
+      .then( async usr => {
 
-         
-  User.findByPk(user.id)
-  .then(user => {
-
+        console.log(usr)
+        let user = await User.findByPk(usr.id);
     var token = jwt.sign({ id: user.id }, config.secret, {
       expiresIn: 86400 // 24 hours
     });
@@ -57,7 +56,7 @@ exports.signup = async (req, res) => {
       var authorities = [];
       var userTypes = [];
 
-      user.getUserTypes().then(usrType => {
+    user.getUserTypes().then(usrType => {
         for (let i = 0; i < usrType.length; i++) {
           userTypes.push(usrType[i].name);
         }
@@ -68,7 +67,7 @@ exports.signup = async (req, res) => {
           authorities.push("ROLE_" + roles[i].name.toUpperCase());
         }
 
-        res.status(200).send({
+        return res.status(200).send({
           id: user.id,
           firstName: user.firstName,
           lastName: user.lastName,
@@ -79,17 +78,15 @@ exports.signup = async (req, res) => {
           accessToken: token,
           msg: 'User Registered Successfully'
         });
-      });
-  })
-  .catch(err => {
-    res.status(500).send({ message: err.message });
-  })
       })
       .catch(err => {
         res.status(500).send({ message: err.message });
-      });
-      
+      })
     })
+    .catch(err => {
+      res.status(500).send({ message: err.message });
+    })
+      })
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
