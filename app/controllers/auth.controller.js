@@ -35,16 +35,55 @@ exports.signup = async (req, res) => {
               }
             }
           }).then(roles => {
-            user.setRoles(roles).then(() => {
-              res.send({ msg: "User was registered successfully!" });
-            });
+            user.setRoles(roles)
           });
         } else {
           // user role = 1
-          user.setRoles([1]).then(() => {
-            res.send({ msg: "User was registered successfully!" });
-          });
+          user.setRoles([1])
         }
+        return user
+      })
+      .then(usr => {
+        console.log(usr);
+
+         
+  User.findByPk(user.id)
+  .then(user => {
+
+    var token = jwt.sign({ id: user.id }, config.secret, {
+      expiresIn: 86400 // 24 hours
+    });
+
+      var authorities = [];
+      var userTypes = [];
+
+      user.getUserTypes().then(usrType => {
+        for (let i = 0; i < usrType.length; i++) {
+          userTypes.push(usrType[i].name);
+        }
+      })
+
+      user.getRoles().then(roles => {
+        for (let i = 0; i < roles.length; i++) {
+          authorities.push("ROLE_" + roles[i].name.toUpperCase());
+        }
+
+        res.status(200).send({
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          mobile: user.mobile,
+          roles: authorities,
+          userTypes,
+          accessToken: token,
+          msg: 'User Registered Successfully'
+        });
+      });
+  })
+  .catch(err => {
+    res.status(500).send({ message: err.message });
+  })
       })
       .catch(err => {
         res.status(500).send({ message: err.message });
