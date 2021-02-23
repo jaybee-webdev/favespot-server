@@ -46,36 +46,36 @@ const Role = db.role;
 const UserType = db.userType;
 
 
-db.sequelize.sync({force: true}).then(() => {
-  console.log('Drop and Resync Db');
-  initial();
-});
+// db.sequelize.sync({force: true}).then(() => {
+//   console.log('Drop and Resync Db');
+//   initial();
+// });
 
-function initial() {
-  Role.create({
-    id: 1,
-    name: "user"
-  });
+// function initial() {
+//   Role.create({
+//     id: 1,
+//     name: "user"
+//   });
  
-  Role.create({
-    id: 2,
-    name: "moderator"
-  });
+//   Role.create({
+//     id: 2,
+//     name: "moderator"
+//   });
  
-  Role.create({
-    id: 3,
-    name: "admin"
-  });
+//   Role.create({
+//     id: 3,
+//     name: "admin"
+//   });
 
-  UserType.create({
-    id: 1,
-    name: "consumer"
-  });
-  UserType.create({
-    id: 2,
-    name: "restaurant",
-  });
-}
+//   UserType.create({
+//     id: 1,
+//     name: "consumer"
+//   });
+//   UserType.create({
+//     id: 2,
+//     name: "restaurant",
+//   });
+// }
 
 db.sequelize.sync();
 // db.sequelize.drop({ force: true }).then().catch(err => {
@@ -112,7 +112,7 @@ io.on('connection', socket => {
 
     socket.on('checkOut', (data)=> {
       console.log(data)
-
+      
       io.to(rests[data.restId]).emit('newOrder', data);
     })  
 
