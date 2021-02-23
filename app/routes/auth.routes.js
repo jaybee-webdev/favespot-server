@@ -25,7 +25,7 @@ module.exports = function(app) {
   app.post("/api/auth/signin", controller.signin);
 
   app.post('/api/upload/file', 
-  uploadFile.single("file"),
+  [authJwt.verifyToken, uploadFile.single("file")],
   controller.UploadDp);
   
 

@@ -55,9 +55,7 @@ app.get(
 
 app.get(
   "/api/menu/:restId",
-  [
-    authJwt.verifyToken,
-  ],
+
   controller.getMenu
 );
 

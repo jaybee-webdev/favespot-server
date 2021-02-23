@@ -22,6 +22,10 @@ module.exports = (sequelize, Sequelize) => {
       isOpen: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
+      },
+      dpUrl: {
+        type: Sequelize.STRING
+
       }
     });
   

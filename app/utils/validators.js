@@ -155,6 +155,28 @@ const isEmail = (email) => {
     };
   };
   
+
+
+  exports.isResto = (data) => {
+    let isRestaurant = false;
+    data.map(a => {
+        if(a.name === 'restaurant'){
+            isRestaurant = true;
+        }
+    })
+    return isRestaurant
+}
+
+exports.formatRest = (data) => {
+  let ft = [];
+
+  data.forEach(a => {
+    ft.push(a.name);
+  })
+  // console.log(ft)
+  return ft
+}
+
   
 
 

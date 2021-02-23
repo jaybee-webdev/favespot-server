@@ -61,18 +61,7 @@ db.location.belongsToMany(db.restaurant, {
   otherKey: "locationId"
 })
 
-//Food Types
-db.restaurant.belongsToMany(db.category, {
-  through: "food_types",
-  foreignKey: "categoryId",
-  otherKey: "restaurantId"
-})
 
-db.category.belongsToMany(db.restaurant, {
-  through: "food_types",
-  foreignKey: "restaurantId",
-  otherKey: "categoryId"
-})
 
 //Menu Type
 
@@ -80,14 +69,14 @@ db.category.belongsToMany(db.restaurant, {
 //User Types
 db.userType.belongsToMany(db.user, {
   through: "user_types",
-  foreignKey: "userId",
-  otherKey: "userTypeId"
+  foreignKey: "userTypeId",
+  otherKey: "userId"
 });
 
 db.user.belongsToMany(db.userType, {
   through: "user_types",
-  foreignKey: "userTypeId",
-  otherKey: "userId"
+  foreignKey: "userId",
+  otherKey: "userTypeId"
 });
 
 
@@ -105,6 +94,20 @@ db.role.belongsToMany(db.user, {
 });
 
 //Categories
+//Food Types
+db.restaurant.belongsToMany(db.category, {
+  through: "food_types",
+  foreignKey: "restaurantId",
+  otherKey: "categoryId"
+})
+
+db.category.belongsToMany(db.restaurant, {
+  through: "food_types",
+  foreignKey: "categoryId",
+  otherKey: "restaurantId"
+})
+
+
 db.menu.belongsToMany(db.category, {
   through: "menu_categories",
   foreignKey: "categoryId",

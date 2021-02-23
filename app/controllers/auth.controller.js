@@ -117,8 +117,8 @@ exports.signin = (req, res) => {
 
       if (!passwordIsValid) {
         return res.status(401).send({
+          message: "Invalid Password!",
           accessToken: null,
-          message: "Invalid Password!"
         });
       }
 
@@ -164,11 +164,10 @@ exports.getUserData = async (req, res) => {
         { model: Location },
         { model: Role },
         { model: UserType },
-        { model: Restaurant, required: false }
+        { model: Restaurant}
         ]
   })
   .then(usr => {
-    console.log(usr);
     res.status(200).json(usr);
 
   })
@@ -176,30 +175,21 @@ exports.getUserData = async (req, res) => {
     res.status(500).send({ message: err.message });
   })
 
-    // await req.user.getRoles().then(roles => {
-    //   // console.log(roles)
-    //   for (let i = 0; i < roles.length; i++) {
-    //     userRoles.push("ROLE_" + roles[i].name.toUpperCase());
-    //   }
-    // });
-
-    // await req.user.getLocations().then(loc => {
-    //   console.log(loc)
-    // });
-
-
-    // userData.roles = userRoles;
-    // userData.locations = userLocations;
-    // console.log(userData)
-    // res.status(200).json(userData);
+  
 };
 
 
 exports.UploadDp = (req, res) => {
-  console.log('wewewewewew')
-  // const uid = req.user.uid
+  const userId = req.userId;
 let fileName = req.file.filename;
-res.send(fileName)
+let file = `${config.staticUrl}${fileName}`;
+  Restaurant.update({dpUrl: file }, { where: { userId } })
+  .then(() => {
+    res.send(file)
+  })
+  .catch(err => {
+    res.status(500).send({ message: err.message });
+  })
 // User.updateOne({_id: uid}, { dpUrl: staticUrl + fileName })
 // .then(rs => {
 //   res.status(201).json({ dpUrl: staticUrl + fileName})

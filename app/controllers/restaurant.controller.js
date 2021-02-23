@@ -8,7 +8,7 @@ const Menu = db.menu;
 const Category = db.category;
 const Op = db.Sequelize.Op;
 
-var { validateRestaurantData, tsFormat, locFormat, validateMenuData, validateCategoryData } = require('../utils/validators');
+var { validateRestaurantData, tsFormat, locFormat, validateMenuData, validateCategoryData, formatRest } = require('../utils/validators');
 var { radiusLocator } = require('../utils/geolocator');
 
 exports.createRestaurant = async (req, res) => {
@@ -19,7 +19,8 @@ exports.createRestaurant = async (req, res) => {
 
 
   Restaurant.create({ id: uuidv4(), ...req.body.restaurantDetails, 
-    userId: req.userId
+    userId: req.userId, dpUrl: `${config.staticUrl}home-top.jpg`
+
   })
     .then(rest => {
       console.log(rest)
@@ -32,7 +33,7 @@ exports.createRestaurant = async (req, res) => {
         res.status(500).send({ message: err.message });
       });
     
-      req.user.addUserTypes([2])
+      req.user.setUserTypes([2])
           res.send({ message: "Restaurant was created successfully!" });
     })
     .catch(err => {
@@ -60,15 +61,25 @@ exports.getRestaurant = async (req, res) => {
 
 
 exports.getRestaurants = async (req, res) => {
-
-  let lat = req.query.lat;
-  let lng = req.query.lng;
- 
-  console.log(lat)
-  console.log(lng)
-
-  let loc = await locFormat({lat, lng});
-  res.send(loc);
+   await Restaurant.findAll({
+      include: [{ model: Location }, {model: Category}] 
+    }, { raw: true })
+    .then(rest => {
+      let resto = [];
+      rest.forEach(a => {
+      obj = {}
+      obj = a
+        let arr = a.categories.map(ab => {return ab.name});
+        a.categories = arr;
+        a.foodTypes = arr;
+        resto.push(a);
+      })
+      res.status(200).send(resto);
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).send({ msg: err.message });
+    })
 };
 
 
@@ -79,7 +90,6 @@ exports.getNearbyRestaurants = async (req, res) => {
   let rad = req.query.rad ? req.query.rad : 10;
   let restaurants = [];
   let loc = await locFormat({lat, lng});
-  console.log(loc)
   Location.findAll({ where: {
     type: 'restaurant',
     [Op.or]: [...loc]
@@ -113,13 +123,11 @@ exports.createMenu = async (req, res) => {
   if(!valid) return res.status(400).json(errors);
 
   let cat = await Category.findByPk(req.body.catId);
-  console.log(cat)
   Menu.create({
     id: uuidv4(), ...req.body, restaurantId})
   .then(mn => {
-    console.log(mn)
-    mn.setCategories(cat)
-
+    mn.setCategories(cat);
+    
     res.send({msg: 'Menu Created Successfully'});
 })
 .catch(err => {
@@ -133,7 +141,6 @@ exports.getMenu = (req, res) => {
   const restaurantId = req.params.restId
   Menu.findAll({where: {restaurantId}})
   .then(cat => {
-      console.log(cat);
     res.json(cat);
 })
 .catch(err => {
@@ -142,15 +149,22 @@ exports.getMenu = (req, res) => {
 };
 
 exports.createCategory = async (req, res) => {
-
+  console.log(req.restId)
   let { errors, valid } = validateCategoryData(req.body);
   if(!valid) return res.status(400).json(errors);
-
-
+  let rest = await Restaurant.findByPk(req.restId);
+  console.log(rest)
   Category.create({
    ...req.body, userId: req.userId})
   .then(cat => {
+    rest.addCategories(cat)
+    .then(rs => {
+      console.log(rs)
     res.json(cat);
+    })
+    .catch(err => {
+      console.log(err)
+    })
 })
 .catch(err => {
   res.status(500).send({ msg: err.message });
@@ -158,11 +172,9 @@ exports.createCategory = async (req, res) => {
 };
 
 exports.getCategory = (req, res) => {
-  console.log('cawdca')
   const userId = req.userId
   Category.findAll({ where: { userId } })
   .then(cat => {
-      console.log(cat);
     res.json(cat);
 })
 .catch(err => {
